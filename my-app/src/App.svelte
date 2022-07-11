@@ -1,22 +1,31 @@
 <script>
   import Header from "./components/Header.svelte";
+  import Footer from "./components/Footer.svelte";
   import Daftar from "./components/Daftar.svelte";
+  import SenaraiCalon from "./components/SenaraiCalon.svelte";
   import logo from "./assets/svelte.png";
   import Counter from "./lib/Counter.svelte";
 
   // import "./luq.js";
+  // $: console.log(window.location.href);
 
   var luqscript = document.createElement("script"); // create a script DOM node
   luqscript.src =
     "https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"; // set its src to the provided URL
   document.body.appendChild(luqscript);
 
+  var luqscript = document.createElement("script"); // create a script DOM node
+  luqscript.src = `${import.meta.env.BASE_URL}script/luq.js`; // set its src to the provided URL
+  document.body.appendChild(luqscript);
+
   // tabs
-  let items = ["Current Polls", "Add New Poll"];
-  let activeItem = "Current Polls";
-  const tabChange = (e) => (activeItem = e.detail);
+  let activeItem = "daftar";
+  const tabChange = (e) => {
+    console.log("change", activeItem);
+    activeItem = e.detail;
+  };
   const handleAdd = () => {
-    activeItem = "Current Polls";
+    activeItem = "Senarai_Calon";
   };
 </script>
 
@@ -34,17 +43,14 @@
 
 <div class="container-fluid">
   <main>
-    <Header {activeItem} {items} on:tabChange={tabChange} />
+    <Header {activeItem} on:tabChange={tabChange} />
     <!-- <img src={logo} alt="Svelte Logo" /> -->
-    <Daftar />
+    {#if activeItem === "daftar"}
+      <Daftar on:add={handleAdd} />
+    {:else if activeItem === "Senarai_Calon"}
+      <SenaraiCalon />
+    {/if}
   </main>
 
-  <footer class="my-5 pt-5 text-muted text-center text-small">
-    <p class="mb-1">&copy; 2017–2022 Company Name</p>
-    <ul class="list-inline">
-      <li class="list-inline-item"><a href="#">Privacy</a></li>
-      <li class="list-inline-item"><a href="#">Terms</a></li>
-      <li class="list-inline-item"><a href="#">Support</a></li>
-    </ul>
-  </footer>
+  <footer />
 </div>

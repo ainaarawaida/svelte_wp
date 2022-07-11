@@ -1,24 +1,57 @@
 <script>
-    import logo from "../img/Picture10.jpg";
+    import logo from "/logosuraux.png";
 
     import { createEventDispatcher } from "svelte";
     let dispatch = createEventDispatcher();
 
-    export let items;
     export let activeItem;
 </script>
 
-<!-- <header>
-    <h1>
-        <img src={logo} alt="Poll Ninja Logo" />
-    </h1>
-</header> -->
-<ul class="nav nav-pills">
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/daftar"
-            >Daftar Calon</a
-        >
-    </li>
+<div class="d-flex flex-column bd-highlight mb-3">
+    <div class="d-flex justify-content-center">
+        <img src={logo} alt="Surau Al-Baiti" />
+    </div>
+    <div class="d-flex justify-content-center">
+        <h1>Surau Al-Baiti</h1>
+    </div>
+    <div class="d-flex justify-content-center">
+        <ul class="nav nav-pills p-2 bd-highlight">
+            <li
+                class="nav-item"
+                on:click={() => dispatch("tabChange", "daftar")}
+            >
+                <button
+                    class="nav-link {activeItem == 'daftar' ? 'active' : ''}"
+                    aria-current="page">Daftar Calon</button
+                >
+            </li>
+            <li
+                class="nav-item"
+                on:click={() => dispatch("tabChange", "Senarai_Calon")}
+            >
+                <button
+                    class="nav-link {activeItem == 'Senarai_Calon'
+                        ? 'active'
+                        : ''}"
+                    aria-current="page">Senarai Calon</button
+                >
+            </li>
+            <li
+                class="nav-item"
+                on:click={() => dispatch("tabChange", "undi_Calon")}
+            >
+                <button
+                    class="nav-link {activeItem == 'undi_Calon'
+                        ? 'active'
+                        : ''}"
+                    aria-current="page">Undi Calon</button
+                >
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- <ul class="nav nav-pills">
     <li class="nav-item dropdown">
         <a
             class="nav-link dropdown-toggle"
@@ -41,4 +74,4 @@
     <li class="nav-item">
         <a class="nav-link disabled">Disabled</a>
     </li>
-</ul>
+</ul> -->
