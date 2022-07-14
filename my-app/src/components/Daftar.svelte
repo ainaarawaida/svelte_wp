@@ -2,6 +2,7 @@
     import { createEventDispatcher } from "svelte";
     let dispatch = createEventDispatcher();
     import PollStore from "../stores/pollStore.js";
+    import { onMount } from "svelte";
 
     // var luqscript = document.createElement("script"); // create a script DOM node
     // luqscript.src = "https://cdn.startbootstrap.com/sb-forms-latest.js"; // set its src to the provided URL
@@ -22,17 +23,57 @@
         }
 
         if (valid) {
-            console.log($PollStore);
-            let poll = { ...fields, id: Math.random(), votes: 0 };
-            $PollStore = [poll, ...$PollStore];
-            alert("Berjaya Daftar");
-            dispatch("add");
+            // console.log($PollStore);
+            // let poll = { ...fields, id: Math.random(), votes: 0 };
+            // $PollStore = [poll, ...$PollStore];
+
+            const dataanak = new FormData();
+            dataanak.append("action", "luqvote_daftarcalon");
+            dataanak.append("nama", fields.nama);
+            dataanak.append("jawatan", fields.jawatan);
+            let ticket = new Promise(function (myResolve, myReject) {
+                fetch(frontend_ajax_object.ajaxurl, {
+                    method: "POST",
+                    // or 'PUT'
+                    body: dataanak,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log("tiket", data);
+                        myResolve(data);
+                        alert("Berjaya Daftar");
+                        dispatch("add");
+                    });
+            });
         }
     };
+
+    let senaraijawatan = [];
+
+    onMount(async () => {
+        const dataanak = new FormData();
+        dataanak.append("action", "luqvote_daftarcalon");
+        dataanak.append("fungsi", "senaraijawatan");
+        let ticket = new Promise(function (myResolve, myReject) {
+            fetch(frontend_ajax_object.ajaxurl, {
+                method: "POST",
+                // or 'PUT'
+                body: dataanak,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    // console.log("tiketsc", data);
+                    myResolve(data);
+                });
+        });
+
+        senaraijawatan = await ticket;
+    });
+    // $: console.log("senaraijawatan", senaraijawatan);
 </script>
 
 <div class="container px-5 my-5">
-    <form id="contactForm" on:submit|preventDefault={submitHandler}>
+    <form id="contactForm" on:submit|preventDefault={() => submitHandler()}>
         <div class="form-floating mb-3">
             <input
                 required
@@ -54,8 +95,13 @@
                 bind:value={fields.jawatan}
                 required
             >
-                <option value="Pengerusi">Pengerusi</option>
-                <option value="Tim. Pengerusi">Tim. Pengerusi</option>
+                {#each senaraijawatan as jwtn (jwtn)}
+                    <option value={jwtn.substring(2)}
+                        >{jwtn.substring(2)}</option
+                    >
+                {:else}
+                    <option value="">tiada</option>
+                {/each}
             </select>
             <label for="jawatan">Jawatan</label>
         </div>

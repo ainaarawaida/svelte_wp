@@ -3,6 +3,7 @@
   import Footer from "./components/Footer.svelte";
   import Daftar from "./components/Daftar.svelte";
   import SenaraiCalon from "./components/SenaraiCalon.svelte";
+  import DaftarJawatan from "./components/DaftarJawatan.svelte";
   import logo from "./assets/svelte.png";
   import Counter from "./lib/Counter.svelte";
 
@@ -10,8 +11,7 @@
   // $: console.log(window.location.href);
 
   var luqscript = document.createElement("script"); // create a script DOM node
-  luqscript.src =
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"; // set its src to the provided URL
+  luqscript.src = `${import.meta.env.BASE_URL}script/bootstrap.bundle.min.js`; // set its src to the provided URL
   document.body.appendChild(luqscript);
 
   var luqscript = document.createElement("script"); // create a script DOM node
@@ -19,9 +19,9 @@
   document.body.appendChild(luqscript);
 
   // tabs
-  let activeItem = "daftar";
+  let activeItem = "Senarai_Calon";
   const tabChange = (e) => {
-    console.log("change", activeItem);
+    // console.log("change", activeItem);
     activeItem = e.detail;
   };
   const handleAdd = () => {
@@ -31,13 +31,13 @@
 
 <svelte:head>
   <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    href="{import.meta.env.BASE_URL}script/bootstrap.min.css"
     rel="stylesheet"
     crossorigin="anonymous"
   />
   <link
     rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+    href="{import.meta.env.BASE_URL}script/bootstrap-icons.css"
   />
 </svelte:head>
 
@@ -45,7 +45,9 @@
   <main>
     <Header {activeItem} on:tabChange={tabChange} />
     <!-- <img src={logo} alt="Svelte Logo" /> -->
-    {#if activeItem === "daftar"}
+    {#if activeItem === "DaftarJawatan"}
+      <DaftarJawatan />
+    {:else if activeItem === "daftar"}
       <Daftar on:add={handleAdd} />
     {:else if activeItem === "Senarai_Calon"}
       <SenaraiCalon />

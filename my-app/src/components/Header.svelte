@@ -5,6 +5,7 @@
     let dispatch = createEventDispatcher();
 
     export let activeItem;
+    let statuslogin = frontend_ajax_object.statuslogin.ID;
 </script>
 
 <div class="d-flex flex-column bd-highlight mb-3">
@@ -16,15 +17,31 @@
     </div>
     <div class="d-flex justify-content-center">
         <ul class="nav nav-pills p-2 bd-highlight">
-            <li
-                class="nav-item"
-                on:click={() => dispatch("tabChange", "daftar")}
-            >
-                <button
-                    class="nav-link {activeItem == 'daftar' ? 'active' : ''}"
-                    aria-current="page">Daftar Calon</button
+            {#if statuslogin !== 0}
+                <li
+                    class="nav-item"
+                    on:click={() => dispatch("tabChange", "DaftarJawatan")}
                 >
-            </li>
+                    <button
+                        class="nav-link {activeItem == 'DaftarJawatan'
+                            ? 'active'
+                            : ''}"
+                        aria-current="page">Daftar Jawatan</button
+                    >
+                </li>
+
+                <li
+                    class="nav-item"
+                    on:click={() => dispatch("tabChange", "daftar")}
+                >
+                    <button
+                        class="nav-link {activeItem == 'daftar'
+                            ? 'active'
+                            : ''}"
+                        aria-current="page">Daftar Calon</button
+                    >
+                </li>
+            {/if}
             <li
                 class="nav-item"
                 on:click={() => dispatch("tabChange", "Senarai_Calon")}
@@ -34,17 +51,6 @@
                         ? 'active'
                         : ''}"
                     aria-current="page">Senarai Calon</button
-                >
-            </li>
-            <li
-                class="nav-item"
-                on:click={() => dispatch("tabChange", "undi_Calon")}
-            >
-                <button
-                    class="nav-link {activeItem == 'undi_Calon'
-                        ? 'active'
-                        : ''}"
-                    aria-current="page">Undi Calon</button
                 >
             </li>
         </ul>
